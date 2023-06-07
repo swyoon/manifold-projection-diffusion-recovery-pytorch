@@ -1,0 +1,9 @@
+tqdm
+omegaconf
+pytest
+scikit-learn
+scipy
+numpy
+matplotlib
+timm
+scikit-image

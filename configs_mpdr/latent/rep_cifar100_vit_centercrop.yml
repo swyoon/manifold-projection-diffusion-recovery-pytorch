@@ -1,0 +1,42 @@
+data:
+  indist_train:
+    dataset: TensorDataset
+    key: cifar100_training_full
+    path: datasets/extracted_feature/vit_centercrop.pkl
+    batch_size: 128
+    n_workers: 2
+    shuffle: True
+    split: training_full # dummy
+  indist_val:
+    dataset: TensorDataset
+    key: cifar100_evaluation
+    path: datasets/extracted_feature/vit_centercrop.pkl
+    batch_size: 128
+    n_workers: 2
+    shuffle: False 
+    split: training_full # dummy
+  ood_svhn:
+    dataset: TensorDataset
+    key: svhn_evaluation
+    path: datasets/extracted_feature/vit_centercrop.pkl
+    batch_size: 128
+    n_workers: 2
+    shuffle: False 
+    split: training_full # dummy
+  ood_celeba32:
+    dataset: TensorDataset
+    key: celeba32_evaluation
+    path: datasets/extracted_feature/vit_centercrop.pkl
+    batch_size: 128
+    n_workers: 2
+    shuffle: False 
+    split: training_full # dummy
+  ood_cifar10:
+    dataset: TensorDataset
+    key: cifar10_evaluation
+    path: datasets/extracted_feature/vit_centercrop.pkl
+    batch_size: 128
+    n_workers: 2
+    shuffle: False 
+    split: training_full # dummy
+

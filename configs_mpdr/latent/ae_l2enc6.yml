@@ -1,0 +1,33 @@
+trainer: ood
+logger: base
+model:
+  arch: ae_mpdr_v5
+  decoder:
+    arch: fc 
+    l_hidden:
+      - 1024
+      - 1024 
+    out_activation: linear 
+    activation: leakyrelu
+  encoder:
+    arch: fc 
+    l_hidden:
+      - 1024
+      - 1024 
+    out_activation: linear 
+    activation: leakyrelu
+  spherical: True
+  x_dim: 768
+  z_dim: 128
+  loss: l2_sum
+  l2_norm_reg_enc: 0.000001
+training:
+  n_epoch: 100
+  optimizer:
+    name: 'adam'
+    lr: 0.0001
+  print_interval: 1000
+  save_interval: 2000
+  save_interval_epoch: 20
+  val_interval: 1000
+

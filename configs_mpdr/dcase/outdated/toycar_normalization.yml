@@ -1,0 +1,117 @@
+trainer: ood
+logger: base
+model:
+  arch: ae 
+  decoder:
+    arch: fc
+    l_hidden:
+        - 128
+        - 128
+        - 128
+        - 128
+    activation: relu
+    out_activation: linear
+    batch_norm: True
+    out_batch_norm: False
+  encoder:
+    arch: fc
+    l_hidden:
+        - 128
+        - 128
+        - 128
+        - 128
+    activation: relu
+    out_activation: relu
+    batch_norm: True
+    out_batch_norm: True
+  x_dim: 640
+  z_dim: 8
+data:
+    indist_train:
+        is_2D: False
+        dataset: DCASE 
+          # path: /home3/eyj/workspace/data/dcase2020track2/dev_data/
+        path: datasets/dcase2020track2/dev_data/
+        split: training
+        shuffle: True
+        batch_size: 512 
+        n_workers: 4
+        # dataset specific
+        machine_type: ToyCar
+        seed: 1
+        is_reject_ids: False
+        designate_ids: null
+        normalize_dict:
+            enable: True
+            scaler_pkl: null  # defaults to: .dcase_temp/<machine_type>_scaler.pkl
+        frames_to_concat: 5
+    indist_val:
+        is_2D: False
+        dataset: DCASE 
+          # path: /home3/eyj/workspace/data/dcase2020track2/dev_data/
+        path: datasets/dcase2020track2/dev_data/
+        split: validation
+        shuffle: False
+        batch_size: 512 
+        n_workers: 4
+        # dataset specific
+        machine_type: ToyCar
+        seed: 1
+        is_reject_ids: False
+        designate_ids: null
+        normalize_dict:
+            enable: True
+            scaler_pkl: null  # defaults to: .dcase_temp/<machine_type>_scaler.pkl
+        frames_to_concat: 5
+    ood_val:
+        is_2D: False
+        dataset: DCASE 
+          # path: /home3/eyj/workspace/data/dcase2020track2/dev_data/
+        path: datasets/dcase2020track2/dev_data/
+        split: validation_ood
+        shuffle: False
+        batch_size: 512 
+        n_workers: 4
+        # dataset specific
+        machine_type: ToyCar
+        seed: 1
+        is_reject_ids: False
+        designate_ids: null
+        normalize_dict:
+            enable: True
+            scaler_pkl: null  # defaults to: .dcase_temp/<machine_type>_scaler.pkl
+        frames_to_concat: 5
+    dcase_toycar1:
+      dataset: DCASE_test
+      path: datasets/dcase2020track2/dev_data/ToyCar
+      split: evaluation  # not needed but just a placeholder
+      machine_id: id_01
+      frames_to_concat: 5
+      normalize_dict:
+          enable: True
+          scaler_pkl: null  # /home3/eyj/workspace/data/dcase2020track2_stats/ToyCar_scaler.pkl
+      batch_size: 1
+      shuffle: False
+      n_workers: 8
+    dcase_toycar2:
+      dataset: DCASE_test
+      path: datasets/dcase2020track2/dev_data/ToyCar
+      split: evaluation  # not needed but just a placeholder
+      machine_id: id_02
+      frames_to_concat: 5
+      normalize_dict:
+          enable: True
+          scaler_pkl: null  # /home3/eyj/workspace/data/dcase2020track2_stats/ToyCar_scaler.pkl
+      batch_size: 1
+      shuffle: False
+      n_workers: 8
+
+training:
+    n_epoch: 100
+    save_interval: 100
+    val_interval: 1000
+    print_interval: 100
+    optimizer:
+        name:  'adam'
+        lr: 1.0e-3
+    save_interval_epoch: 50

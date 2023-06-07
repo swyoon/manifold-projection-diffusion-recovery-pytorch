@@ -1,0 +1,5 @@
+model:
+  arch: ldm_ae 
+  key: kl-f4
+  input_size: 32
+  

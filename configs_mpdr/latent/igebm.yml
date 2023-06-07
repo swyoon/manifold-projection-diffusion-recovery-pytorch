@@ -1,0 +1,35 @@
+trainer: ood 
+logger: base 
+model:
+  arch: ffebm 
+  net:
+    arch: fc
+    l_hidden:
+      - 1024
+      - 1024 
+      - 1024 
+      - 1024 
+    out_activation: linear 
+    activation: leakyrelu
+    learn_out_scale: True
+    use_spectral_norm: True
+  sampler_x:
+      sampler: langevin
+      n_step: 30
+      stepsize: 0.1 
+      noise_std: 0.005
+        # clip_langevin_grad: 0.01
+      buffer_size: 10000
+      replay_ratio: 0.95
+      initial_dist: uniform_sphere 
+        # bound: [0, 1]
+  x_dim: 768
+training:
+  n_epoch: 50
+  optimizer:
+    name: 'adam'
+    lr: 0.0001
+  print_interval: 100
+  save_interval: 2000
+  save_interval_epoch: 1
+  val_interval: 100

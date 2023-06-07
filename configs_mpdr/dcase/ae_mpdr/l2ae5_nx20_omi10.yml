@@ -1,0 +1,111 @@
+trainer: mpdr
+logger: base
+
+model:
+  arch: mpdr_single 
+  x_dim: 640
+  z_dim: 32
+  interp_dim_start: 256
+  interp_dim_end: 384
+
+  ae:
+  # AE structural
+    decoder:
+      arch: fc
+      l_hidden:
+          - 1024
+          - 1024
+      activation: leakyrelu
+      out_activation: linear
+    encoder:
+      arch: fc
+      l_hidden:
+          - 1024
+          - 1024
+      activation: leakyrelu
+      out_activation: linear
+    # Latent space
+    spherical: True
+      # encoding_noise: 0.01
+    l2_norm_reg_enc: 0.00001 
+
+  # energy is IDNN 
+  net_x:
+    # should be copied from IDNN config
+    arch: ae 
+    decoder:
+      arch: fc
+      l_hidden:
+          - 1024 
+          - 1024 
+      activation: leakyrelu
+      out_activation: linear
+      batch_norm: False 
+      out_batch_norm: False
+    encoder:
+      arch: fc
+      l_hidden:
+          - 1024 
+          - 1024 
+      activation: leakyrelu
+      out_activation: linear 
+      batch_norm: False 
+      out_batch_norm: False 
+    spherical: True 
+    l2_norm_reg_enc: 1e-5
+    x_dim: 640
+    z_dim: 32
+  
+
+  mpdr:
+    temperature: 1
+    temperature_omi: 1
+    gamma_vx: null
+    gamma_neg_recon: 1.
+    sampling_x: langevin 
+    mcmc_n_step_x: 20
+    mcmc_stepsize_x: 10
+    mcmc_noise_x: 0.005
+      # mcmc_bound_x: [-3, 3]
+    mcmc_bound_x: null  # since output of AE is linear unit..
+    mcmc_custom_stepsize: True
+    mcmc_n_step_omi: 10 
+    mcmc_stepsize_omi: 0.1
+    mcmc_noise_omi: 0.01
+    mcmc_normalize_omi: True 
+    proj_mode: uniform 
+    proj_noise_start: 0.05
+    proj_noise_end: 0.3
+    proj_const: 0.0001
+    proj_const_omi: 0.0001
+    proj_dist: geodesic
+    l2_norm_reg_netx: null 
+    use_recon_error: False
+    grad_clip_off: null
+    energy_method: null 
+
+    # config specific to mpdr_conditional_idnn
+    conditional: False 
+
+    # * new configs to MPDR_Single and children *
+    mh_omi: False 
+    custom_netx_reg: True
+training:
+  # load_ae: results_mpdr/dcase/idnn_toycar/idnn/gmade_mpdr_toycar/c2/model_last.pkl  # you may set it null if you want to traing AE from scratch
+    load_ae: null
+    ae_epoch: 50
+    nae_epoch: 12  # 1 epoch is about 2000 iter. we will save every epoch, so we will use either epoch 5 or epoch 6
+    netx_epoch: 0
+    save_interval: 5000
+    val_interval: 5000
+    val_interval_nae: 1000 
+    print_interval: 500
+    print_interval_nae: 1000
+    print_interval_netx: 1000
+    ae_lr: 0.0001
+    nae_lr: 1e-5
+    netx_lr: 1e-4
+    mode: 'off'
+    transfer_ae: True
+      # init_net_x:  results_mpdr/dcase/idnn_toycar/idnn/idnn_toycar_z32_nosphere_l2/l2con5/model_epoch_50.pkl  # pre-trained idnn checkpoint
+

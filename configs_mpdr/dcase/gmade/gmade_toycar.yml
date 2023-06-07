@@ -1,0 +1,43 @@
+trainer: ood
+logger: base
+
+model:
+  arch: idnn  # GroupMADE is activated if n_component exists 
+  decoder:
+    arch: fc
+    l_hidden:
+        - 128
+        - 128
+        - 128
+        - 128
+    activation: leakyrelu
+    out_activation: linear
+    batch_norm: False 
+    out_batch_norm: False
+  encoder:
+    arch: fc
+    l_hidden:
+        - 128
+        - 128
+        - 128
+        - 128
+    activation: leakyrelu
+    out_activation: linear 
+    batch_norm: False 
+    out_batch_norm: False 
+  spherical: False 
+  x_dim: 640
+  z_dim: 32
+  interp_dim_start: 256
+  interp_dim_end: 384
+  l2_norm_reg_context: 0.00001
+  n_component: 10
+training:
+    n_epoch: 101
+    save_interval: 100
+    val_interval: 1000
+    print_interval: 100
+    optimizer:
+        name:  'adam'
+        lr: 1.0e-3
+    save_interval_epoch: 50

@@ -1,0 +1,167 @@
+trainer: ood
+logger: base
+
+model:
+  arch: idnn  # GroupMADE is activated if n_component exists 
+  decoder:
+    arch: fc
+    l_hidden:
+        - 128
+        - 128
+        - 128
+        - 128
+    activation: swish 
+    out_activation: linear
+    batch_norm: False 
+    out_batch_norm: False
+  encoder:
+    arch: fc
+    l_hidden:
+        - 128
+        - 128
+        - 128
+        - 128
+    activation: swish 
+    out_activation: swish 
+    batch_norm: False 
+    out_batch_norm: False 
+  spherical: False 
+  x_dim: 640
+  z_dim: 32
+  interp_dim_start: 256
+  interp_dim_end: 384
+  l2_norm_reg_context: 0.00001
+  n_component: 2
+
+# data
+data:
+    indist_train:
+        dataset: DCASE 
+          # path: /home3/eyj/workspace/data/dcase2020track2/dev_data/
+        path: datasets/dcase2020track2/dev_data/
+        split: training
+        shuffle: True
+        batch_size: 512 
+        n_workers: 4
+        # dataset specific
+        machine_type: ToyCar
+        seed: 1
+        is_reject_ids: False
+        designate_ids: null
+        normalize_dict:
+            enable: True 
+            scaler_pkl: .dcase_temp/ToyCar_scaler.pkl
+        frames_to_concat: 5
+        step: 1
+        sfft_hop: 512
+        reload: False  # default 경로에 있는 data, scaler을 모두 초기화 하고 싶을때
+    indist_val:
+        dataset: DCASE 
+          # path: /home3/eyj/workspace/data/dcase2020track2/dev_data/
+        path: datasets/dcase2020track2/dev_data/
+        split: validation
+        shuffle: False
+        batch_size: 512 
+        n_workers: 4
+        # dataset specific
+        machine_type: ToyCar
+        seed: 1
+        is_reject_ids: False
+        designate_ids: null
+        normalize_dict:
+          enable: True 
+          scaler_pkl: .dcase_temp/ToyCar_scaler.pkl
+        frames_to_concat: 5
+        step: 1
+        sfft_hop: 512
+        reload: False  # default 경로에 있는 data, scaler을 모두 초기화 하고 싶을때
+    ood_val:
+        dataset: DCASE 
+          # path: /home3/eyj/workspace/data/dcase2020track2/dev_data/
+        path: datasets/dcase2020track2/dev_data/
+        split: validation_ood
+        shuffle: False
+        batch_size: 512 
+        n_workers: 4
+        # dataset specific
+        machine_type: ToyCar
+        seed: 1
+        is_reject_ids: False
+        designate_ids: null
+        normalize_dict:
+          enable: True 
+          scaler_pkl: .dcase_temp/ToyCar_scaler.pkl
+        frames_to_concat: 5
+        step: 1
+        sfft_hop: 512
+        reload: False  # default 경로에 있는 data, scaler을 모두 초기화 하고 싶을때
+    dcase_toycar1:
+      dataset: DCASE_test
+      path: datasets/dcase2020track2/dev_data/ToyCar
+      split: evaluation  # not needed but just a placeholder
+      machine_id: id_01
+      frames_to_concat: 5
+      step: 1
+      sfft_hop: 512
+      normalize_dict:
+          enable: True 
+          scaler_pkl: .dcase_temp/ToyCar_scaler.pkl
+      batch_size: 1
+      shuffle: False
+      n_workers: 8
+      reload: False  # default 경로에 있는 data, scaler을 모두 초기화 하고 싶을때
+    dcase_toycar2:
+      dataset: DCASE_test
+      path: datasets/dcase2020track2/dev_data/ToyCar
+      split: evaluation  # not needed but just a placeholder
+      machine_id: id_02
+      frames_to_concat: 5
+      step: 1
+      sfft_hop: 512
+      normalize_dict:
+          enable: True 
+          scaler_pkl: .dcase_temp/ToyCar_scaler.pkl
+      batch_size: 1
+      shuffle: False
+      n_workers: 8
+      reload: False  # default 경로에 있는 data, scaler을 모두 초기화 하고 싶을때
+    dcase_toycar3:
+      dataset: DCASE_test
+      path: datasets/dcase2020track2/dev_data/ToyCar
+      split: evaluation  # not needed but just a placeholder
+      machine_id: id_03
+      frames_to_concat: 5
+      step: 1
+      sfft_hop: 512
+      normalize_dict:
+          enable: True 
+          scaler_pkl: .dcase_temp/ToyCar_scaler.pkl
+      batch_size: 1
+      shuffle: False
+      n_workers: 8
+      reload: False  # default 경로에 있는 data, scaler을 모두 초기화 하고 싶을때
+    dcase_toycar4:
+      dataset: DCASE_test
+      path: datasets/dcase2020track2/dev_data/ToyCar
+      split: evaluation  # not needed but just a placeholder
+      machine_id: id_04
+      frames_to_concat: 5
+      step: 1
+      sfft_hop: 512
+      normalize_dict:
+          enable: True 
+          scaler_pkl: .dcase_temp/ToyCar_scaler.pkl
+      batch_size: 1
+      shuffle: False
+      n_workers: 8
+      reload: False  # default 경로에 있는 data, scaler을 모두 초기화 하고 싶을때
+
+training:
+    n_epoch: 101
+    save_interval: 100
+    val_interval: 1000
+    print_interval: 100
+    optimizer:
+        name:  'adam'
+        lr: 1.0e-3
+    save_interval_epoch: 50

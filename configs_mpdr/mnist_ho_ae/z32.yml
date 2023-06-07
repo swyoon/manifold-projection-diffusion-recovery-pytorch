@@ -1,0 +1,59 @@
+trainer: ood
+logger: base
+model:
+    arch: ae 
+    encoder: 
+        arch: conv2 
+        nh: 8
+        out_activation: linear 
+    decoder:
+        arch: deconv2
+        nh: 8
+        likelihood_type: isotropic_gaussian
+    x_dim: 1
+    z_dim: 32
+    pred_by_recon: True
+data:
+    indist_train:
+        dataset: MNISTLeaveOut
+        path: datasets
+        out_class: 9
+        shuffle: True
+        holdout: False
+        split: training
+        batch_size: 128
+        n_workers: 2 
+    indist_val:
+        dataset: MNISTLeaveOut
+        path: datasets
+        out_class: 9
+        shuffle: True
+        holdout: False
+        split: validation 
+        batch_size: 128
+        n_workers: 2 
+    ood1:
+        dataset: Constant_OOD 
+        size: 28
+        channel: 1
+        path: datasets
+        split: validation
+        batch_size: 128
+        n_workers: 2 
+    ood2:
+        dataset: MNISTLeaveOut
+        path: datasets
+        out_class: 9
+        holdout: True
+        split: validation
+        batch_size: 128
+        n_workers: 2 
+training:
+    n_epoch: 100
+    save_interval: 2000
+    val_interval: 500
+    print_interval: 100
+    optimizer:
+        name:  'adam'
+        lr: 1.0e-4
+    save_interval_epoch: 1

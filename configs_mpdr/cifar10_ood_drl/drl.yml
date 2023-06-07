@@ -1,0 +1,63 @@
+data:
+  indist_train:
+    batch_size: 128
+    dataset: CIFAR10_OOD 
+    n_workers: 8
+    path: datasets
+    shuffle: true
+    split: training
+    augmentations:
+        normalize:
+            mean: [0.5, 0.5, 0.5]
+            std: [0.5, 0.5, 0.5]
+  indist_val:
+    batch_size: 128
+    dataset: CIFAR10_OOD 
+    n_workers: 8
+    path: datasets
+    split: validation
+    augmentations:
+        normalize:
+            mean: [0.5, 0.5, 0.5]
+            std: [0.5, 0.5, 0.5]
+  ood_target:
+    batch_size: 128
+    dataset: SVHN_OOD 
+    n_workers: 4
+    path: datasets
+    split: validation
+    augmentations:
+        normalize:
+            mean: [0.5, 0.5, 0.5]
+            std: [0.5, 0.5, 0.5]
+  ood_val:
+    batch_size: 128
+    channel: 3
+    dataset: Constant_OOD
+    n_workers: 4
+    path: datasets
+    size: 32
+    split: validation
+    augmentations:
+        normalize:
+            mean: [0.5, 0.5, 0.5]
+            std: [0.5, 0.5, 0.5]
+logger: base
+model:
+  arch: diffusion_recovery_likelihood 
+  drl:
+    num_timesteps: 6
+    beta_schedule: drl
+    sampling: langevin
+    paper_langevin_scaling: True
+  net:
+    img_sz: 32
+trainer: ood 
+training:
+  n_epoch: 100
+  print_interval: 50
+  save_interval: 2000
+  val_interval: 100
+  optimizer:
+    name: adam
+    lr: 1e-5

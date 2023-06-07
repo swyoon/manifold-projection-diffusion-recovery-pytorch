@@ -1,0 +1,6 @@
+training:
+  load_ae:
+    -  results_mpdr/dcase/research/idnn_mpdr_aeZ32/netx100_l2ae5_omi10/toyconveyor/model_last.pkl
+    -  results_mpdr/dcase/research/idnn_mpdr_aeZ64/netx100_l2ae5_omi10/toyconveyor/model_last.pkl
+    -  results_mpdr/dcase/research/idnn_mpdr_aeZ128/netx100_l2ae5_omi10/toyconveyor/model_last.pkl
+  init_net_x_pretrained: results_mpdr/dcase/batch/idnn_z32/z32/toyconveyor/model_epoch_100.pkl

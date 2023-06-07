@@ -1,0 +1,132 @@
+trainer: mpdr 
+logger: base 
+model:
+  arch: mpdr_joint
+  ae:
+    encoder: 
+      arch: conv3fc
+      out_activation: linear
+      activation: relu
+      use_spectral_norm: True
+      nh: 8
+    decoder:
+      arch: deconv3 
+      nh: 8
+      out_activation: sigmoid
+    spherical: True
+    encoding_noise: 0.01
+    input_noise:
+      noise_type: mask 
+      n_patch: 8
+      mask_portion: 0.5
+      # l2_norm_reg_enc: 0.00001 
+    tau: 0.1
+    neg_coef: 0.1
+  mpdr:
+    temperature: 1
+    gamma_vx: 1
+    gamma_vz: 1
+    sigma_schedule: constant 
+    sigma_start: 0.1
+    sigma_end: 0.1
+    num_timesteps: 50
+    sampling_x: langevin 
+    sampling_s: gaussian 
+    mcmc_n_step_x: 5
+    mcmc_stepsize_x: 1
+    mcmc_noise_x: 0.005
+    mcmc_bound_x: [0, 1]
+    mcmc_custom_stepsize: True
+    proj_mode: constant
+    proj_noise_start: 0.05
+    proj_noise_end: 0.05
+    proj_const: 0.
+    proj_dist: geodesic
+    l2_norm_reg_netx: null 
+    use_net_x: True 
+    use_net_z: False 
+    grad_clip_off: 0.01
+    update_ae: null 
+    energy_method: null
+    recovery_gaussian_blur:
+      kernel_size: 5
+  net_x:
+    arch: IGEBMEncoderV2
+    use_spectral_norm: True 
+    keepdim: True
+    learn_out_scale: True
+  net_s:
+    arch: fcnet_temb
+    activation: relu
+    spec_norm: True 
+    hidden_dim: 1024 
+    t_emb_dim: 256 
+  net_z:
+    arch: fc 
+    activation: relu
+    out_activation: linear
+    use_spectral_norm: True 
+    l_hidden: [256, 256] 
+    flatten_input: True
+    learn_out_scale: True
+  x_dim: 3
+  z_dim: 128
+data:
+    indist_train:
+        dataset: CIFAR10_OOD 
+        path: datasets
+        batch_size: 128
+        n_workers: 8
+        split: training_full
+        augmentations:
+          hflip:
+            p: 0.5
+              # cjitter:
+              #   jitter_p: 0.5
+    indist_val:
+        dataset: CIFAR10_OOD 
+        path: datasets
+        batch_size: 128
+        n_workers: 2
+        split: evaluation 
+    ood_svhn:
+        dataset: SVHN_OOD 
+        channel: 3
+        path: datasets
+        batch_size: 128
+        split: evaluation 
+        n_workers: 2
+    ood_constant:
+        dataset: Constant_OOD 
+        size: 32
+        path: datasets
+        batch_size: 128
+        n_workers: 2
+        split: validation
+    ood_celeba32:
+        dataset: CelebA_OOD 
+        size: 32
+        path: datasets
+        batch_size: 128
+        n_workers: 2
+        split: evaluation 
+    ood_cifar100:
+        dataset: CIFAR100_OOD 
+        path: datasets
+        batch_size: 128
+        n_workers: 2
+        split: evaluation 
+training:
+  # load_ae: results_mpdr/research/cifar10_joint/v4_z128_conv_mask/mask_enc0.05_projc/model_best.pkl
+    ae_epoch: 240
+    nae_epoch: 50
+    print_interval: 500
+    print_interval_nae: 100
+    val_interval: 5000
+    val_interval_nae: 100 
+    save_interval: 5000
+    ae_lr: 1.0e-4
+    nae_lr: 1.0e-4
+    sample_val_interval: null
+    mode: 'off' 
+      # mode: 'on' 

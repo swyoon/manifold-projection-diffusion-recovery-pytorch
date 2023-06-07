@@ -1,0 +1,36 @@
+trainer: ood
+logger: base
+
+model:
+  arch: diffusion_recovery_likelihood 
+  x_dim: 768
+  drl:
+    num_timesteps: 6
+    beta_schedule: drl
+    sampling: langevin
+    mcmc_num_steps: 30
+    img_sz: 1
+    channel: 768
+    paper_langevin_scaling: True
+    mcmc_step_size_b_square: 2e-6
+    beta_start: 0.001
+    beta_end: 0.1
+      # mcmc_step_size_b_square: 2e-2
+
+  net:
+    arch: fcnet_temb
+    hidden_dim: 128
+    t_emb_dim: 128
+    activation: swish
+    spec_norm: True
+
+training:
+  n_epoch: 100
+  optimizer:
+    name: adam
+    lr: 0.0001
+  print_interval: 100
+  save_interval_epoch: 10
+  save_interval: 2000
+  val_interval: 100
+

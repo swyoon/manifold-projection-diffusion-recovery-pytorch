@@ -1,0 +1,7 @@
+model:
+  arch: latent_ae
+  backbone_name: resnetv2_50x1_bitm 
+  ae: null
+  spherical: True
+  centercrop: True 
+ 

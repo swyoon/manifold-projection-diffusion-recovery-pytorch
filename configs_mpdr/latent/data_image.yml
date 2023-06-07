@@ -1,0 +1,48 @@
+data:
+    cifar10_training_full:
+        dataset: CIFAR10_OOD 
+        path: datasets
+        batch_size: 32
+        n_workers: 8
+        split: training_full
+    cifar10_evaluation:
+        dataset: CIFAR10_OOD 
+        path: datasets
+        batch_size: 32
+        n_workers: 8
+        split: evaluation 
+    svhn_evaluation:
+        dataset: SVHN_OOD 
+        channel: 3
+        path: datasets
+        batch_size: 32
+        split: evaluation 
+        n_workers: 2
+    constant_evaluation:
+        dataset: Constant_OOD 
+        size: 32
+        path: datasets
+        batch_size: 32
+        n_workers: 2
+        split: evaluation 
+    celeba32_evaluation:
+        dataset: CelebA_OOD 
+        size: 32
+        path: datasets
+        batch_size: 32
+        n_workers: 2
+        split: evaluation 
+    cifar100_training_full:
+        dataset: CIFAR100_OOD 
+        path: datasets
+        batch_size: 32
+        n_workers: 2
+        split: training_full 
+    cifar100_evaluation:
+        dataset: CIFAR100_OOD 
+        path: datasets
+        batch_size: 32
+        n_workers: 2
+        split: evaluation 
+
+

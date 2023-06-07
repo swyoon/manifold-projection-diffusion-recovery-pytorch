@@ -1,0 +1,137 @@
+data:
+  indist_train:
+    augmentations:
+      hflip:
+        p: 0.5
+    batch_size: 128
+    dataset: CIFAR10_OOD
+    n_workers: 8
+    path: datasets
+    shuffle: true
+    split: training_full
+  indist_val:
+    batch_size: 128
+    dataset: CIFAR10_OOD
+    n_workers: 2
+    path: datasets
+    split: evaluation
+  ood_celeba32:
+    batch_size: 128
+    dataset: CelebA_OOD
+    n_workers: 2
+    path: datasets
+    size: 32
+    split: evaluation
+  ood_cifar100:
+    batch_size: 128
+    dataset: CIFAR100_OOD
+    n_workers: 2
+    path: datasets
+    split: evaluation
+  ood_constant:
+    batch_size: 128
+    dataset: Constant_OOD
+    n_workers: 2
+    path: datasets
+    size: 32
+    split: evaluation
+  ood_svhn:
+    batch_size: 128
+    channel: 3
+    dataset: SVHN_OOD
+    n_workers: 2
+    path: datasets
+    split: evaluation
+device: cuda:1
+logger: base
+model:
+  ae:
+  - arch: ae
+    decoder:
+      activation: leakyrelu
+      arch: deconv3
+      nh: 8
+      out_activation: sigmoid
+    encoder:
+      activation: leakyrelu
+      arch: conv3
+      nh: 8
+      out_activation: linear
+    spherical: true
+    x_dim: 3
+    z_dim: 32
+  - arch: ae
+    decoder:
+      activation: leakyrelu
+      arch: deconv3
+      nh: 8
+      out_activation: sigmoid
+    encoder:
+      activation: leakyrelu
+      arch: conv3
+      nh: 8
+      out_activation: linear
+    spherical: true
+    x_dim: 3
+    z_dim: 64
+  - arch: ae
+    decoder:
+      activation: leakyrelu
+      arch: deconv3
+      nh: 8
+      out_activation: sigmoid
+    encoder:
+      activation: leakyrelu
+      arch: conv3
+      nh: 8
+      out_activation: linear
+    spherical: true
+    x_dim: 3
+    z_dim: 128
+  arch: mpdr_ensemble
+  mpdr:
+    gamma_neg_recon: null
+    gamma_vx: 1
+    l2_norm_reg_netx: null
+    mcmc_bound_x:
+    - 0
+    - 1
+    mcmc_custom_stepsize: true
+    mcmc_n_step_omi: 10
+    mcmc_n_step_x: 5
+    mcmc_noise_omi: 0.01
+    mcmc_noise_x: 0.005
+    mcmc_normalize_omi: true
+    mcmc_stepsize_omi: 0.1
+    mcmc_stepsize_x: 10
+    proj_const: 0
+    proj_const_omi: 0.0001
+    proj_dist: geodesic
+    proj_mode: uniform
+    proj_noise_end: 0.3
+    proj_noise_start: 0.05
+    sampling_x: langevin
+    temperature: 1
+    temperature_omi: 1
+  net_x:
+    arch: IGEBMEncoderV2
+    keepdim: true
+    learn_out_scale: true
+    use_spectral_norm: true
+  x_dim: 3
+trainer: mpdr
+training:
+  ae_epoch: 0
+  ae_lr: 0.0001
+  load_ae:
+  - results_mpdr/cifar10_research/v5/l2enc5_z32_aeepoch40/model_last.pkl
+  - results_mpdr/cifar10_research/v5/l2enc5_z64_aeepoch40/model_last.pkl
+  - results_mpdr/cifar10_research/v5/l2enc5_z128_aeepoch40/model_last.pkl
+  mode: 'off'
+  nae_epoch: 50
+  nae_lr: 0.0001
+  print_interval: 500
+  print_interval_nae: 100
+  save_interval: 5000
+  val_interval: 5000
+  val_interval_nae: 100

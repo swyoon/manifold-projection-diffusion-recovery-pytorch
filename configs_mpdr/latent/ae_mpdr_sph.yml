@@ -1,0 +1,103 @@
+trainer: mpdr
+logger: base
+
+model:
+  arch: mpdr_single 
+  x_dim: 768
+  z_dim: 128
+
+  ae:
+    decoder:
+      arch: fc 
+      l_hidden:
+        - 1024
+        - 1024 
+      out_activation: linear 
+      activation: leakyrelu
+    encoder:
+      arch: fc 
+      l_hidden:
+        - 1024
+        - 1024 
+      out_activation: linear 
+      activation: leakyrelu
+    spherical: True
+      # encoding_noise: 0.01
+    l2_norm_reg_enc: 0.000001 
+    loss: l2_sum
+
+  # energy is IDNN 
+  net_x:
+    # should be copied from IDNN config
+    arch: ae 
+    decoder:
+      arch: fc 
+      l_hidden:
+        - 1024
+        - 1024 
+      out_activation: linear 
+      activation: leakyrelu
+    encoder:
+      arch: fc 
+      l_hidden:
+        - 1024
+        - 1024 
+      out_activation: linear 
+      activation: leakyrelu
+    spherical: True
+      # encoding_noise: 0.01
+    l2_norm_reg_enc: 0.000001 
+    x_dim: 768
+    z_dim: 128
+    loss: l2_sum
+  
+
+  mpdr:
+    temperature: 1
+    temperature_omi: 1
+    gamma_vx: null
+    gamma_neg_recon: 1.
+    sampling_x: langevin 
+    mcmc_n_step_x: 10
+    mcmc_stepsize_x: 0.1 
+    mcmc_noise_x: 0.005
+      # mcmc_bound_x: [-3, 3]
+    mcmc_bound_x: Null 
+    mcmc_custom_stepsize: True
+    mcmc_n_step_omi: 10 
+    mcmc_stepsize_omi: 0.1
+    mcmc_noise_omi: 0.01
+    mcmc_normalize_omi: True 
+    proj_mode: uniform 
+    proj_noise_start: 0.05
+    proj_noise_end: 0.3
+    proj_const: 0.0001
+    proj_const_omi: 0.0001
+    proj_dist: geodesic 
+    l2_norm_reg_netx: null 
+    use_recon_error: False
+    grad_clip_off: null
+    energy_method: null 
+    # * new configs to MPDR_Single and children *
+    custom_netx_reg: True 
+training:
+  # load_ae: results_mpdr/dcase/idnn_toycar/idnn/gmade_mpdr_toycar/c2/model_last.pkl  # you may set it null if you want to traing AE from scratch
+  # load_ae: results_mpdr/latent/ae/cifar100_8x8_z32/model_epoch_90.pkl
+    ae_epoch: 100
+    nae_epoch: 40 # 1 epoch is about 2000 iter. we will save every epoch, so we will use either epoch 5 or epoch 6
+    netx_epoch: 0
+    save_interval: 1000
+    val_interval: 1000
+    val_interval_nae: 100 
+    print_interval: 500
+    print_interval_nae: 100
+    print_interval_netx: 1000
+    ae_opt: adam 
+    ae_lr: 0.0001
+    nae_lr: 1e-5
+    netx_lr: 1e-4
+    mode: 'off'
+    transfer_ae: True
+      # switch_spherical: True
+      # init_net_x:  results_mpdr/dcase/idnn_toycar/idnn/idnn_toycar_z32_nosphere_l2/l2con5/model_epoch_50.pkl  # pre-trained idnn checkpoint
+

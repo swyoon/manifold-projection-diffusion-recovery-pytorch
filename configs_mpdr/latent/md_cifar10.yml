@@ -1,0 +1,4 @@
+model:
+  arch: latent_md
+  maha_statistic_path: datasets/extracted_feature/cifar10-maha-statistic.pkl
+  mode: MD

@@ -1,0 +1,112 @@
+trainer: mpdr 
+logger: base 
+model:
+  arch: mpdr_ensemble
+  l_ae:
+    - encoder: 
+        arch: conv3fc
+        out_activation: linear
+        activation: relu
+        nh: 16
+      decoder:
+        arch: deconv3 
+        nh: 16
+        out_activation: sigmoid
+      spherical: True
+      encoding_noise: 0.01 
+      l2_norm_reg_enc: 0.00001 
+  mpdr:
+    temperature: 1
+    gamma_vx: 1
+    gamma_vz: 1
+    sigma_schedule: constant 
+    sigma_start: 0.1
+    sigma_end: 0.1
+    num_timesteps: 2
+    sampling_x: langevin 
+    sampling_s: null 
+    mcmc_n_step_x: 5
+    mcmc_stepsize_x: 10
+    mcmc_noise_x: 0.005
+    mcmc_bound_x: [0, 1]
+    mcmc_custom_stepsize: True
+    proj_mode: constant
+    proj_noise_start: 0.2
+    proj_noise_end: 0.2
+    proj_const: 0.01
+    l2_norm_reg_netx: null 
+    sampler_ae_idx: 0
+    use_net_z: True
+    grad_clip_off: 0.01
+  net_x:
+    arch: conv3fc
+    nh: 8 
+    nh_mlp: 1024
+    out_activation: linear
+    activation: relu
+    use_spectral_norm: True
+    learn_out_scale: True
+  net_s:
+    arch: fcnet_temb
+    activation: relu
+    spec_norm: True 
+    hidden_dim: 128 
+    t_emb_dim: 256 
+  l_net_z:
+    - arch: fc 
+      activation: relu
+      out_activation: linear
+      use_spectral_norm: True 
+      l_hidden: [256, 256] 
+      flatten_input: True
+      learn_out_scale: True
+  x_dim: 3
+  z_dim: [32]
+data:
+    indist_train:
+        dataset: CIFAR10_OOD 
+        path: datasets
+        batch_size: 128
+        n_workers: 8
+        split: training
+        augmentations:
+          hflip:
+            p: 0.5
+    indist_val:
+        dataset: CIFAR10_OOD 
+        path: datasets
+        batch_size: 128
+        n_workers: 2
+        split: validation 
+    ood_svhn:
+        dataset: SVHN_OOD 
+        channel: 3
+        path: datasets
+        batch_size: 128
+        split: validation
+        n_workers: 2
+    ood_constant:
+        dataset: Constant_OOD 
+        size: 32
+        path: datasets
+        batch_size: 128
+        n_workers: 2
+        split: validation
+    ood_celeba32:
+        dataset: CelebA_OOD 
+        size: 32
+        path: datasets
+        batch_size: 128
+        n_workers: 2
+        split: validation
+training:
+    load_ae: results_mpdr/research/cifar10_ensemble/ensemble_z32/z32_l2enc5/model_best.pkl
+    ae_epoch: 240
+    nae_epoch: 50
+    print_interval: 500
+    print_interval_nae: 100
+    val_interval: 5000
+    val_interval_nae: 100 
+    save_interval: 5000
+    ae_lr: 1.0e-4
+    nae_lr: 1.0e-4

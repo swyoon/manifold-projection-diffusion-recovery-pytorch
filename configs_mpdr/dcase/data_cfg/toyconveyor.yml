@@ -1,0 +1,106 @@
+data:
+    indist_train:
+        dataset: DCASE 
+          # path: /home3/eyj/workspace/data/dcase2020track2/dev_data/
+        path: datasets/dcase2020track2/dev_data/
+        split: training
+        shuffle: True
+        batch_size: 512 
+        n_workers: 4
+        # dataset specific
+        machine_type: ToyConveyor
+        seed: 1
+        is_reject_ids: False
+        designate_ids: null
+        normalize_dict:
+            enable: True 
+            scaler_pkl: null
+        frames_to_concat: 5
+        step: 1
+        sfft_hop: 512
+        reload: False  # default 경로에 있는 data, scaler을 모두 초기화 하고 싶을때
+    indist_val:
+        dataset: DCASE 
+          # path: /home3/eyj/workspace/data/dcase2020track2/dev_data/
+        path: datasets/dcase2020track2/dev_data/
+        split: validation
+        shuffle: False
+        batch_size: 512 
+        n_workers: 4
+        # dataset specific
+        machine_type: ToyConveyor
+        seed: 1
+        is_reject_ids: False
+        designate_ids: null
+        normalize_dict:
+          enable: True 
+          scaler_pkl: null
+        frames_to_concat: 5
+        step: 1
+        sfft_hop: 512
+        reload: False  # default 경로에 있는 data, scaler을 모두 초기화 하고 싶을때
+    ood_val:
+        dataset: DCASE 
+          # path: /home3/eyj/workspace/data/dcase2020track2/dev_data/
+        path: datasets/dcase2020track2/dev_data/
+        split: validation_ood
+        shuffle: False
+        batch_size: 512 
+        n_workers: 4
+        # dataset specific
+        machine_type: ToyConveyor
+        seed: 1
+        is_reject_ids: False
+        designate_ids: null
+        normalize_dict:
+          enable: True 
+          scaler_pkl: null
+        frames_to_concat: 5
+        step: 1
+        sfft_hop: 512
+        reload: False  # default 경로에 있는 data, scaler을 모두 초기화 하고 싶을때
+    dcase_toyconveyor1:
+      dataset: DCASE_test
+      path: datasets/dcase2020track2/dev_data/ToyConveyor
+      split: evaluation  # not needed but just a placeholder
+      machine_id: id_01
+      frames_to_concat: 5
+      step: 1
+      sfft_hop: 512
+      normalize_dict:
+          enable: True 
+          scaler_pkl: null
+      batch_size: 1
+      shuffle: False
+      n_workers: 8
+      reload: False  # default 경로에 있는 data, scaler을 모두 초기화 하고 싶을때
+    dcase_toyconveyor2:
+      dataset: DCASE_test
+      path: datasets/dcase2020track2/dev_data/ToyConveyor
+      split: evaluation  # not needed but just a placeholder
+      machine_id: id_02
+      frames_to_concat: 5
+      step: 1
+      sfft_hop: 512
+      normalize_dict:
+          enable: True 
+          scaler_pkl: null
+      batch_size: 1
+      shuffle: False
+      n_workers: 8
+      reload: False  # default 경로에 있는 data, scaler을 모두 초기화 하고 싶을때
+    dcase_toyconveyor3:
+      dataset: DCASE_test
+      path: datasets/dcase2020track2/dev_data/ToyConveyor
+      split: evaluation  # not needed but just a placeholder
+      machine_id: id_03
+      frames_to_concat: 5
+      step: 1
+      sfft_hop: 512
+      normalize_dict:
+          enable: True 
+          scaler_pkl: null
+      batch_size: 1
+      shuffle: False
+      n_workers: 8
+      reload: False  # default 경로에 있는 data, scaler을 모두 초기화 하고 싶을때

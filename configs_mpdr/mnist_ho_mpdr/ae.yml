@@ -1,0 +1,40 @@
+model:
+  arch: ae 
+  decoder:
+    arch: deconv2
+    nh: 8
+    out_activation: sigmoid
+  encoder:
+    arch: conv2fc
+    nh: 8
+    nh_mlp: 1024
+    out_activation: linear 
+  spherical: True
+  x_dim: 1
+  z_dim: 32
+trainer: base 
+training:
+  n_epoch: 100
+  print_interval: 500
+  save_interval: 2000
+  save_interval_epoch: 20
+
+data:
+  training:
+    batch_size: 128
+    dataset: MNISTLeaveOut
+    n_workers: 4
+    out_class:
+    - 9
+    path: datasets
+    shuffle: true
+    split: training
+  validation:
+    batch_size: 128
+    dataset: MNISTLeaveOut
+    n_workers: 4
+    out_class:
+    - 9
+    path: datasets
+    split: validation
+

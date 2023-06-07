@@ -1,0 +1,7 @@
+model:
+  arch: latent_ae
+  backbone_name: vit_base_patch16_224
+  ae: null
+  spherical: True
+  centercrop: False
+  

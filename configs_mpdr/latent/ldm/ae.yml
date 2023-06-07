@@ -1,0 +1,25 @@
+trainer: ood
+logger: base
+model:
+  arch: ae_mpdr_v5
+  decoder:
+    arch: deconv8x8
+    nh: 8
+    out_activation: linear 
+  encoder:
+    arch: conv8x8
+    nh: 8
+    out_activation: linear 
+  spherical: True
+  x_dim: 64
+  z_dim: 32
+training:
+  n_epoch: 100
+  optimizer:
+    name: 'adam'
+    lr: 0.0001
+  print_interval: 100
+  save_interval: 2000
+  save_interval_epoch: 10
+  val_interval: 1000
+
